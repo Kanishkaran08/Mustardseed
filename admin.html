@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Admin — Mustard Seed Photography</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}body{background:#0c0a08;color:#ede4d8;font-family:'Raleway',sans-serif;min-height:100vh;overflow-x:hidden}
+img{max-width:100%;display:block}
+:root{--bg:#0c0a08;--bg2:#131008;--bg3:#1a1510;--border:#261e17;--border2:#362a1f;--gold:#c9a96e;--goldD:#a07840;--goldB:#e0c07a;--text:#ede4d8;--textM:#a89078;--textD:#6b5848;--white:#f6ede2;--red:#7a2020;--redT:#ffbaba}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border2)}
+
+/* Buttons */
+.btn{background:var(--gold);color:var(--bg);border:none;padding:10px 22px;font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:600;cursor:pointer;transition:background .2s;white-space:nowrap}
+.btn:hover{background:var(--goldB)}
+.btn-sm{padding:6px 12px;font-size:10px}
+.btn-d{background:var(--red);color:var(--redT)}
+.btn-d:hover{background:#9e3030}
+.btn-o{background:transparent;border:1px solid var(--border2);color:var(--textM);padding:8px 18px;font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.btn-o:hover{border-color:var(--gold);color:var(--gold)}
+.btn-og{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:8px 18px;font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.btn-og:hover{background:var(--gold);color:var(--bg)}
+
+/* Inputs */
+.ai{width:100%;padding:10px 14px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);font-family:'Raleway',sans-serif;font-size:13px;outline:none;margin-bottom:12px;transition:border-color .2s}
+.ai:focus{border-color:var(--gold)}
+.ai::placeholder{color:var(--textD)}
+select.ai option{background:var(--bg3)}
+textarea.ai{resize:vertical;min-height:90px;font-family:'Raleway',sans-serif}
+.fl{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--textM);display:block;margin-bottom:6px}
+
+/* Login */
+#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;background:var(--bg)}
+.login-box{background:var(--bg2);padding:clamp(28px,5vw,52px);width:100%;max-width:400px;border:1px solid var(--border);text-align:center}
+.login-logo{font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--white);font-weight:300;margin-bottom:6px}
+.login-logo span{color:var(--gold)}
+.login-sub{color:var(--textD);font-size:11px;letter-spacing:1px;margin-bottom:32px}
+.login-hint{color:var(--textD);font-size:11px;margin:12px 0 20px}
+.login-back{background:none;border:none;color:var(--textD);font-family:'Raleway',sans-serif;font-size:12px;cursor:pointer}
+.login-back:hover{color:var(--gold)}
+
+/* App Shell */
+#adminApp{display:none;min-height:100vh;flex-direction:column}
+#adminApp.show{display:flex}
+
+/* Header */
+.a-header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 clamp(12px,3vw,32px);display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;gap:12px}
+.a-logo{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--white);font-weight:300;white-space:nowrap;flex-shrink:0}
+.a-logo span{color:var(--gold)}
+.a-header-actions{display:flex;gap:8px;align-items:center;flex-shrink:0}
+
+/* Tab nav */
+.tab-nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 clamp(12px,3vw,32px);display:flex;overflow-x:auto;scrollbar-width:none;gap:0;flex-shrink:0}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{padding:12px 16px;cursor:pointer;border:none;font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:500;background:none;color:var(--textM);border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.tab-btn.on{color:var(--gold);border-bottom-color:var(--gold)}
+
+/* Content */
+.a-content{flex:1;padding:clamp(20px,3vw,40px) clamp(12px,3vw,40px);max-width:1280px;width:100%;margin:0 auto}
+.tab-page{display:none}
+.tab-page.on{display:block}
+.page-title{font-family:'Cormorant Garamond',serif;color:var(--white);font-weight:300;font-size:clamp(22px,4vw,30px);margin-bottom:4px}
+.page-sub{color:var(--textD);font-size:12px;margin-bottom:28px}
+
+/* Upload zone */
+.upload-zone{background:var(--bg2);border:2px dashed var(--border2);padding:clamp(20px,4vw,36px);text-align:center;cursor:pointer;transition:border-color .2s;margin-bottom:24px}
+.upload-zone:hover{border-color:var(--gold)}
+.uz-ico{font-size:28px;margin-bottom:8px}
+
+/* Cards grid */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.img-card{background:var(--bg2);border:1px solid var(--border);overflow:hidden}
+.img-card .thumb{position:relative;height:150px}
+.img-card .thumb img{width:100%;height:100%;object-fit:cover}
+.img-card .card-body{padding:12px}
+
+/* Service card admin */
+.svc-admin-card{background:var(--bg2);border:1px solid var(--border);overflow:hidden;margin-bottom:16px}
+.svc-admin-card.expanded .svc-card-body{display:block}
+.svc-card-header{display:flex;align-items:center;gap:14px;padding:18px 20px;cursor:pointer;transition:background .2s}
+.svc-card-header:hover{background:var(--bg3)}
+.svc-card-header .svc-icon{font-size:22px;flex-shrink:0}
+.svc-card-header h3{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:var(--white);flex:1}
+.svc-card-header .svc-num{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:2px;color:var(--gold);flex-shrink:0}
+.svc-card-header .chevron{color:var(--textD);font-size:18px;transition:transform .3s;flex-shrink:0}
+.svc-admin-card.expanded .chevron{transform:rotate(90deg)}
+.svc-card-body{display:none;padding:0 20px 20px;border-top:1px solid var(--border)}
+.svc-body-grid{display:grid;grid-template-columns:240px 1fr;gap:20px;padding-top:20px;align-items:start}
+.svc-hero-thumb{position:relative;height:200px;background:var(--bg3);overflow:hidden}
+.svc-hero-thumb img{width:100%;height:100%;object-fit:cover}
+.svc-hero-thumb-overlay{position:absolute;inset:0;background:rgba(12,10,8,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;cursor:pointer}
+.svc-hero-thumb:hover .svc-hero-thumb-overlay{opacity:1}
+.svc-images-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.svc-img-item{position:relative;height:80px;background:var(--bg3);overflow:hidden;cursor:pointer}
+.svc-img-item img{width:100%;height:100%;object-fit:cover}
+.svc-img-del{position:absolute;top:3px;right:3px;background:rgba(122,32,32,.8);border:none;color:var(--redT);width:20px;height:20px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+/* Testimonial cards */
+.test-admin-card{background:var(--bg2);border:1px solid var(--border);padding:clamp(16px,2.5vw,22px);display:flex;gap:16px;align-items:flex-start}
+.test-avatar-admin{width:56px;height:56px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid var(--border2);background:var(--bg3);cursor:pointer;position:relative}
+.test-avatar-admin img{width:100%;height:100%;object-fit:cover}
+.test-avatar-admin .tav-overlay{position:absolute;inset:0;background:rgba(12,10,8,.6);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;font-size:18px}
+.test-avatar-admin:hover .tav-overlay{opacity:1}
+.test-avatar-initials{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold)}
+.test-card-body{flex:1;min-width:0}
+.test-card-view{display:block}
+.test-card-edit{display:none}
+.test-admin-card.editing .test-card-view{display:none}
+.test-admin-card.editing .test-card-edit{display:block}
+.test-list{display:grid;gap:12px}
+
+/* About Me admin */
+.ame-admin-grid{display:grid;grid-template-columns:260px 1fr;gap:24px;align-items:start}
+.ame-photo-wrap{position:relative}
+.ame-photo-wrap img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top}
+.ame-photo-ov{position:absolute;inset:0;background:rgba(12,10,8,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;cursor:pointer}
+.ame-photo-wrap:hover .ame-photo-ov{opacity:1}
+.facts-editor{display:grid;gap:8px;margin-bottom:16px}
+.fact-row{display:flex;gap:8px;align-items:center}
+.fact-row input{flex:1}
+
+/* Add box */
+.add-box{background:var(--bg2);padding:clamp(16px,2.5vw,28px);border:1px solid var(--border);margin-bottom:28px}
+.add-box h3{color:var(--gold);font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-bottom:18px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.cb-row{display:flex;align-items:center;gap:10px;padding-bottom:12px}
+.cb-row input[type=checkbox]{accent-color:var(--gold);width:16px;height:16px}
+.cb-row label{color:var(--textM);font-size:13px}
+
+/* List rows */
+.list-row{background:var(--bg2);border:1px solid var(--border);padding:clamp(16px,2.5vw,22px);display:flex;gap:16px;align-items:flex-start;margin-bottom:12px}
+.list-row.gold-b{border-color:var(--gold)}
+.lrow-body{flex:1;min-width:0}
+.lrow-actions{display:flex;gap:8px;flex-shrink:0}
+
+/* Stats */
+.stats-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px;margin-bottom:32px}
+.stat-card{background:var(--bg2);padding:clamp(16px,2.5vw,24px);border:1px solid var(--border);text-align:center}
+.stat-card .ico{font-size:22px;margin-bottom:8px}
+.stat-card .val{font-family:'Cormorant Garamond',serif;font-size:34px;color:var(--gold)}
+.stat-card .lbl{color:var(--textD);font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.box{background:var(--bg2);padding:clamp(16px,2vw,24px);border:1px solid var(--border)}
+.box h3{color:var(--gold);font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px}
+.chart-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.chart-bar-wrap{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.chart-bar{height:100%;background:var(--gold);border-radius:3px;transition:width .6s}
+
+/* Confirm modal */
+#confirmModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9999;align-items:center;justify-content:center;padding:16px}
+#confirmModal.open{display:flex}
+.confirm-box{background:var(--bg2);border:1px solid var(--border2);padding:clamp(24px,4vw,36px);max-width:340px;width:100%;text-align:center}
+.confirm-box .ico{font-size:32px;margin-bottom:14px}
+.confirm-box p{font-family:'Raleway',sans-serif;font-size:14px;color:var(--text);margin-bottom:24px;line-height:1.7}
+.confirm-box .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* Toast */
+#toast{position:fixed;bottom:24px;right:24px;background:var(--gold);color:var(--bg);padding:12px 24px;font-family:'Raleway',sans-serif;font-size:12px;letter-spacing:1.5px;z-index:10000;opacity:0;transition:opacity .3s;pointer-events:none;font-weight:600}
+#toast.show{opacity:1}
+
+/* Responsive */
+@media(max-width:768px){
+  .svc-body-grid{grid-template-columns:1fr}
+  .ame-admin-grid{grid-template-columns:1fr}
+  .grid3{grid-template-columns:1fr 1fr}
+  .two-col{grid-template-columns:1fr}
+  .a-logo{font-size:15px}
+}
+@media(max-width:500px){
+  .grid2,.grid3{grid-template-columns:1fr}
+  .cards-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+  .list-row{flex-direction:column}
+  .a-header-actions .btn-o{display:none}
+  .svc-images-grid{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">Admin <span>Panel</span></div>
+    <div class="login-sub">Mustard Seed Photography</div>
+    <input type="text" class="ai" id="userInput" placeholder="Username" style="text-align:center;margin-bottom:10px" autocomplete="off"/>
+    <input type="password" class="ai" id="pwInput" placeholder="Enter password" style="text-align:center"/>
+    <button class="btn" style="width:100%;margin-bottom:12px" onclick="doLogin()">Login</button>
+    <button class="login-back" onclick="window.location.href='index.html'">← Back to Site</button>
+  </div>
+</div>
+
+<!-- ADMIN APP -->
+<div id="adminApp">
+  <div class="a-header">
+    <div class="a-logo"><span>Admin</span> Panel</div>
+    <div class="a-header-actions">
+      <button class="btn-o" onclick="window.location.href='index.html'">← Live Site</button>
+      <button class="btn btn-d btn-sm" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="tab-nav">
+    <button class="tab-btn on" data-tab="hero"         onclick="switchTab('hero')">Hero</button>
+    <button class="tab-btn"    data-tab="about"        onclick="switchTab('about')">About</button>
+    <button class="tab-btn"    data-tab="aboutme"      onclick="switchTab('aboutme')">About Me</button>
+    <button class="tab-btn"    data-tab="services"     onclick="switchTab('services')">Services</button>
+    <button class="tab-btn"    data-tab="gallery"      onclick="switchTab('gallery')">Gallery</button>
+    <button class="tab-btn"    data-tab="packages"     onclick="switchTab('packages')">Packages</button>
+    <button class="tab-btn"    data-tab="testimonials" onclick="switchTab('testimonials')">Reviews</button>
+    <button class="tab-btn"    data-tab="stats"        onclick="switchTab('stats')">Dashboard</button>
+  </div>
+
+  <div class="a-content">
+
+    <!-- HERO -->
+    <div class="tab-page on" id="tab-hero">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:8px">
+        <div><div class="page-title">Hero Slider</div><div class="page-sub" id="heroCount"></div></div>
+        <button class="btn" onclick="document.getElementById('heroFileIn').click()">+ Add Slides</button>
+      </div>
+      <input type="file" id="heroFileIn" multiple accept="image/*" style="display:none" onchange="handleHeroUpload(this)"/>
+      <div class="upload-zone" onclick="document.getElementById('heroFileIn').click()"
+        ondragover="event.preventDefault()" ondrop="event.preventDefault();dropFiles(event.dataTransfer.files,'hero')">
+        <div class="uz-ico">🖼</div>
+        <p style="color:var(--textM);font-size:13px">Click or drag &amp; drop hero slides</p>
+        <small style="color:var(--textD);font-size:11px;display:block;margin-top:6px">Recommended: wide landscape 16:9</small>
+      </div>
+      <div class="cards-grid" id="heroGrid"></div>
+    </div>
+
+    <!-- ABOUT -->
+    <div class="tab-page" id="tab-about">
+      <div class="page-title">About Section</div>
+      <div class="page-sub">Update the photographer photo and bio shown in the homepage About section.</div>
+      <div style="display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start" id="aboutFormWrap">
+        <div>
+          <input type="file" id="aboutFileIn" accept="image/*" style="display:none" onchange="handleAboutPhoto(this)"/>
+          <div style="position:relative;cursor:pointer;margin-bottom:10px" onclick="document.getElementById('aboutFileIn').click()">
+            <img id="aboutPreview" src="" alt="" style="width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top"/>
+            <div style="position:absolute;inset:0;background:rgba(12,10,8,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0">
+              <button class="btn">Change Photo</button>
+            </div>
+          </div>
+          <button class="btn" style="width:100%" onclick="document.getElementById('aboutFileIn').click()">📷 Change Photo</button>
+        </div>
+        <div>
+          <label class="fl">Tagline / Heading</label>
+          <input class="ai" id="aTagline" placeholder="e.g. Faith. Love. Photography."/>
+          <label class="fl">Name</label>
+          <input class="ai" id="aName" placeholder="e.g. Taylor"/>
+          <label class="fl">Location</label>
+          <input class="ai" id="aLocation" placeholder="e.g. Pennsylvania, PA"/>
+          <label class="fl">Bio Paragraph 1</label>
+          <textarea class="ai" id="aBio1" style="min-height:100px"></textarea>
+          <label class="fl">Bio Paragraph 2</label>
+          <textarea class="ai" id="aBio2" style="min-height:90px"></textarea>
+          <button class="btn" onclick="saveAbout()">Save About Section</button>
+          <span id="aboutSavedMsg" style="color:var(--gold);font-size:12px;margin-left:12px;display:none">✓ Saved!</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABOUT ME -->
+    <div class="tab-page" id="tab-aboutme">
+      <div class="page-title">About Me Page</div>
+      <div class="page-sub">Manage the dedicated About Me page content — story, philosophy, fun facts, and contact details.</div>
+      <div class="ame-admin-grid">
+        <div>
+          <input type="file" id="ameFileIn" accept="image/*" style="display:none" onchange="handleAmePhoto(this)"/>
+          <div class="ame-photo-wrap" onclick="document.getElementById('ameFileIn').click()">
+            <img id="amePreview" src="" alt=""/>
+            <div class="ame-photo-ov"><button class="btn" onclick="event.stopPropagation();document.getElementById('ameFileIn').click()">Change Photo</button></div>
+          </div>
+          <button class="btn" style="width:100%;margin-top:10px" onclick="document.getElementById('ameFileIn').click()">📷 Change Hero Photo</button>
+        </div>
+        <div>
+          <label class="fl">Your Name</label>
+          <input class="ai" id="ameName" placeholder="e.g. Taylor"/>
+          <label class="fl">Page Title / Headline</label>
+          <input class="ai" id="ameTitle" placeholder="e.g. The Face Behind the Lens"/>
+          <label class="fl">Intro (shown on hero)</label>
+          <textarea class="ai" id="ameIntro" style="min-height:70px"></textarea>
+          <label class="fl">My Story</label>
+          <textarea class="ai" id="ameStory" style="min-height:110px"></textarea>
+          <label class="fl">My Philosophy</label>
+          <textarea class="ai" id="amePhilosophy" style="min-height:90px"></textarea>
+          <label class="fl">Scripture / Favorite Quote</label>
+          <input class="ai" id="ameQuote" placeholder='e.g. "Not by might..." — Zechariah 4:6'/>
+          <label class="fl">Fun Facts (4 items)</label>
+          <div class="facts-editor" id="factsEditor"></div>
+          <label class="fl">Instagram Handle</label>
+          <input class="ai" id="ameIg" placeholder="@mustardseedphotographypa"/>
+          <label class="fl">Email</label>
+          <input class="ai" id="ameEmail" placeholder="email@example.com"/>
+          <label class="fl">Phone</label>
+          <input class="ai" id="amePhone" placeholder="+1 (717) 992-7226"/>
+          <button class="btn" onclick="saveAboutMe()">Save About Me Page</button>
+          <span id="ameSavedMsg" style="color:var(--gold);font-size:12px;margin-left:12px;display:none">✓ Saved!</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERVICES -->
+    <div class="tab-page" id="tab-services">
+      <div class="page-title">Service Pages</div>
+      <div class="page-sub">Add, edit, or delete services shown on the homepage and service pages.</div>
+
+      <!-- Add new service -->
+      <div class="add-box">
+        <h3>Add New Service</h3>
+        <div class="grid2">
+          <div>
+            <label class="fl">Service Title</label>
+            <input class="ai" id="nsTitle" placeholder="e.g. Boudoir Photography"/>
+          </div>
+          <div>
+            <label class="fl">Tagline</label>
+            <input class="ai" id="nsTagline" placeholder="e.g. Beautifully Empowered"/>
+          </div>
+        </div>
+        <div class="grid2">
+          <div>
+            <label class="fl">Icon (emoji)</label>
+            <input class="ai" id="nsIcon" placeholder="e.g. 🌸" maxlength="4"/>
+          </div>
+          <div>
+            <label class="fl">URL Slug</label>
+            <input class="ai" id="nsSlug" placeholder="e.g. boudoir (no spaces)"/>
+          </div>
+        </div>
+        <label class="fl">Description</label>
+        <textarea class="ai" id="nsDesc" placeholder="Describe this service..." style="min-height:90px"></textarea>
+        <button class="btn" onclick="addService()">+ Add Service</button>
+      </div>
+
+      <div id="servicesAccordion"></div>
+    </div>
+
+    <!-- GALLERY -->
+    <div class="tab-page" id="tab-gallery">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:8px">
+        <div><div class="page-title">Gallery Manager</div><div class="page-sub" id="galCount"></div></div>
+        <button class="btn" onclick="document.getElementById('galFileIn').click()">+ Upload Photos</button>
+      </div>
+      <input type="file" id="galFileIn" multiple accept="image/*" style="display:none" onchange="handleGalUpload(this)"/>
+      <div class="upload-zone" onclick="document.getElementById('galFileIn').click()"
+        ondragover="event.preventDefault()" ondrop="event.preventDefault();dropFiles(event.dataTransfer.files,'gallery')">
+        <div class="uz-ico">📷</div>
+        <p style="color:var(--textM);font-size:13px">Click or drag &amp; drop gallery images</p>
+      </div>
+      <div class="cards-grid" id="galGrid"></div>
+    </div>
+
+    <!-- PACKAGES -->
+    <div class="tab-page" id="tab-packages">
+      <div class="page-title">Pricing Packages</div>
+      <div class="page-sub" style="margin-bottom:24px">Manage the packages shown on the homepage.</div>
+      <div class="add-box">
+        <h3>Add New Package</h3>
+        <div class="grid3">
+          <div><input class="ai" id="pName" placeholder="Package Name"/></div>
+          <div><input class="ai" id="pPrice" type="number" placeholder="Price ($)"/></div>
+          <div><input class="ai" id="pDuration" placeholder="Duration"/></div>
+        </div>
+        <div class="grid2">
+          <div><input class="ai" id="pImgs" placeholder="Images included"/></div>
+          <div class="cb-row"><input type="checkbox" id="pFeat"/><label for="pFeat">Mark as "Most Popular"</label></div>
+        </div>
+        <textarea class="ai" id="pDesc" placeholder="Description (optional)"></textarea>
+        <button class="btn" onclick="addPackage()">Add Package</button>
+      </div>
+      <div id="pkgList"></div>
+    </div>
+
+    <!-- TESTIMONIALS -->
+    <div class="tab-page" id="tab-testimonials">
+      <div class="page-title">Client Reviews</div>
+      <div class="page-sub" style="margin-bottom:24px">Manage testimonials. Click the avatar circle to upload a profile photo.</div>
+      <div class="add-box">
+        <h3>Add New Testimonial</h3>
+        <div class="grid2">
+          <div><input class="ai" id="tName" placeholder="Client Name"/></div>
+          <div>
+            <select class="ai" id="tRating">
+              <option value="5">5 Stars ★★★★★</option>
+              <option value="4">4 Stars ★★★★☆</option>
+              <option value="3">3 Stars ★★★☆☆</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid2">
+          <div><input class="ai" id="tService" placeholder="Service (e.g. Family, Couples)"/></div>
+          <div><input class="ai" id="tAvatar" placeholder="(Avatar can be added after saving via Edit)" readonly style="cursor:not-allowed;opacity:.5"/></div>
+        </div>
+        <textarea class="ai" id="tText" placeholder="Client testimonial..."></textarea>
+        <button class="btn" onclick="addTestimonial()">Add Testimonial</button>
+      </div>
+      <div class="test-list" id="testList"></div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="tab-page" id="tab-stats">
+      <div class="page-title">Dashboard</div>
+      <div class="page-sub" style="margin-bottom:24px">Overview of your website content.</div>
+      <div class="stats-cards" id="statsCards"></div>
+      <div class="two-col">
+        <div class="box"><h3>Gallery by Category</h3><div id="catChart"></div></div>
+        <div class="box"><h3>Active Packages</h3><div id="pkgListStats"></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div id="confirmModal">
+  <div class="confirm-box">
+    <div class="ico">🗑</div>
+    <p id="confirmMsg">Are you sure?</p>
+    <div class="actions">
+      <button class="btn btn-d" id="confirmYes">Delete</button>
+      <button class="btn-o" onclick="closeConfirm()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script src="data.js"></script>
+<script>
+// ── Auth ──────────────────────────────────────────────────────────────────
+const CRED_HASH = 'eb7fdaeda03ac18b951eb8ef2cf4a92f32ff9d3d59dcaa5216b77f8c6a45be10'; // sha-256 of "username:password"
+async function sha256(text){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function doLogin(){
+  const user = document.getElementById('userInput').value.trim();
+  const pass = document.getElementById('pwInput').value;
+  const hash = await sha256(user + ':' + pass);
+  if(hash === CRED_HASH){
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('adminApp').classList.add('show');
+    initAdmin();
+  } else {
+    document.getElementById('userInput').style.borderColor='#9e3030';
+    document.getElementById('pwInput').style.borderColor='#9e3030';
+    document.getElementById('pwInput').value='';
+    document.getElementById('pwInput').placeholder='Wrong username or password — try again';
+  }
+}
+function doLogout(){
+  document.getElementById('adminApp').classList.remove('show');
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('userInput').value='';
+  document.getElementById('userInput').style.borderColor='';
+  document.getElementById('pwInput').value='';
+  document.getElementById('pwInput').style.borderColor='';
+  document.getElementById('pwInput').placeholder='Enter password';
+}
+document.getElementById('userInput').addEventListener('keydown',e=>e.key==='Enter'&&doLogin());
+document.getElementById('pwInput').addEventListener('keydown',e=>e.key==='Enter'&&doLogin());
+
+// ── Toast ─────────────────────────────────────────────────────────────────
+function toast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ── Confirm modal ─────────────────────────────────────────────────────────
+let confirmCb=null;
+function askConfirm(msg,cb){confirmCb=cb;document.getElementById('confirmMsg').textContent=msg;document.getElementById('confirmModal').classList.add('open');}
+function closeConfirm(){document.getElementById('confirmModal').classList.remove('open');confirmCb=null;}
+document.getElementById('confirmYes').onclick=()=>{if(confirmCb)confirmCb();closeConfirm();};
+document.getElementById('confirmModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeConfirm();});
+
+// ── Tabs ──────────────────────────────────────────────────────────────────
+function switchTab(name){
+  document.querySelectorAll('.tab-page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));
+  document.getElementById('tab-'+name).classList.add('on');
+  if(name==='stats')renderStats();
+}
+
+// ── Data state ────────────────────────────────────────────────────────────
+let heroD,aboutD,aboutMeD,galD,pkgsD,testsD,servicesD;
+
+function initAdmin(){
+  heroD     = load('hero');
+  aboutD    = {...DEFAULTS.about,...load('about')};
+  aboutMeD  = {...DEFAULTS.aboutMe,...load('aboutMe')};
+  galD      = load('gallery');
+  pkgsD     = load('packages');
+  testsD    = load('testimonials');
+  servicesD = load('services');
+  renderHero(); renderAbout(); renderAboutMe(); renderServices();
+  renderGallery(); renderPackages(); renderTestimonials();
+}
+
+// ── File helpers ──────────────────────────────────────────────────────────
+async function filesToB64(files){
+  const out=[];
+  for(const f of Array.from(files)){const url=await readFileAsBase64(f);out.push({url,name:f.name.replace(/\.[^.]+$/,'')});}
+  return out;
+}
+async function dropFiles(files,type){
+  if(type==='hero'){const items=await filesToB64(files);items.forEach(i=>{heroD.push({id:Date.now()+Math.random(),url:i.url,tag:'New Session',label:i.name});});persist('hero',heroD);renderHero();}
+  if(type==='gallery'){const items=await filesToB64(files);items.forEach(i=>{galD.unshift({id:Date.now()+Math.random(),url:i.url,category:'New',title:i.name});});persist('gallery',galD);renderGallery();}
+}
+async function handleHeroUpload(inp){const items=await filesToB64(inp.files);items.forEach(i=>{heroD.push({id:Date.now()+Math.random(),url:i.url,tag:'New Session',label:i.name});});persist('hero',heroD);renderHero();inp.value='';}
+async function handleGalUpload(inp){const items=await filesToB64(inp.files);items.forEach(i=>{galD.unshift({id:Date.now()+Math.random(),url:i.url,category:'New',title:i.name});});persist('gallery',galD);renderGallery();inp.value='';}
+async function handleAboutPhoto(inp){if(!inp.files[0])return;const url=await readFileAsBase64(inp.files[0]);aboutD.image=url;document.getElementById('aboutPreview').src=url;inp.value='';}
+async function handleAmePhoto(inp){if(!inp.files[0])return;const url=await readFileAsBase64(inp.files[0]);aboutMeD.heroImage=url;document.getElementById('amePreview').src=url;inp.value='';}
+
+// ── HERO ──────────────────────────────────────────────────────────────────
+function renderHero(){
+  document.getElementById('heroCount').textContent=heroD.length+' slides';
+  const g=document.getElementById('heroGrid');g.innerHTML='';
+  heroD.forEach((sl,idx)=>{
+    const d=document.createElement('div');d.className='img-card';
+    d.innerHTML=`
+      <div class="thumb">
+        <img src="${sl.url}" alt="" loading="lazy"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(12,10,8,.75))"></div>
+        <div style="position:absolute;bottom:8px;left:10px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:var(--white)">${sl.label}</div>
+        <button class="btn btn-d btn-sm" style="position:absolute;top:6px;right:6px;padding:3px 8px;font-size:11px" onclick="deleteHeroSlide(${idx})">✕</button>
+        <div style="position:absolute;top:6px;left:6px;display:flex;gap:4px">
+          ${idx>0?`<button style="background:rgba(12,10,8,.7);border:1px solid var(--border2);color:var(--textM);padding:2px 7px;cursor:pointer;font-size:13px" onclick="moveHero(${idx},-1)">←</button>`:''}
+          ${idx<heroD.length-1?`<button style="background:rgba(12,10,8,.7);border:1px solid var(--border2);color:var(--textM);padding:2px 7px;cursor:pointer;font-size:13px" onclick="moveHero(${idx},1)">→</button>`:''}
+        </div>
+      </div>
+      <div class="card-body">
+        <input class="ai" value="${sl.tag}" placeholder="Tag" oninput="heroD[${idx}].tag=this.value;persist('hero',heroD)" style="margin-bottom:8px"/>
+        <input class="ai" value="${sl.label}" placeholder="Label" oninput="heroD[${idx}].label=this.value;persist('hero',heroD)" style="margin-bottom:0"/>
+      </div>`;
+    g.appendChild(d);
+  });
+}
+function deleteHeroSlide(idx){askConfirm('Remove this hero slide?',()=>{heroD.splice(idx,1);persist('hero',heroD);renderHero();});}
+function moveHero(idx,dir){const a=heroD;[a[idx],a[idx+dir]]=[a[idx+dir],a[idx]];persist('hero',a);renderHero();}
+
+// ── ABOUT ─────────────────────────────────────────────────────────────────
+function renderAbout(){
+  document.getElementById('aboutPreview').src=aboutD.image||'';
+  document.getElementById('aTagline').value=aboutD.tagline||'';
+  document.getElementById('aName').value=aboutD.name||'';
+  document.getElementById('aLocation').value=aboutD.location||'';
+  document.getElementById('aBio1').value=aboutD.bio1||'';
+  document.getElementById('aBio2').value=aboutD.bio2||'';
+}
+function saveAbout(){
+  aboutD.tagline =document.getElementById('aTagline').value;
+  aboutD.name    =document.getElementById('aName').value;
+  aboutD.location=document.getElementById('aLocation').value;
+  aboutD.bio1    =document.getElementById('aBio1').value;
+  aboutD.bio2    =document.getElementById('aBio2').value;
+  persist('about',aboutD);
+  const m=document.getElementById('aboutSavedMsg');m.style.display='inline';setTimeout(()=>m.style.display='none',2500);
+  toast('About section saved ✓');
+}
+
+// ── ABOUT ME ──────────────────────────────────────────────────────────────
+function renderAboutMe(){
+  document.getElementById('amePreview').src=aboutMeD.heroImage||'';
+  document.getElementById('ameName').value=aboutMeD.name||'';
+  document.getElementById('ameTitle').value=aboutMeD.title||'';
+  document.getElementById('ameIntro').value=aboutMeD.intro||'';
+  document.getElementById('ameStory').value=aboutMeD.story||'';
+  document.getElementById('amePhilosophy').value=aboutMeD.philosophy||'';
+  document.getElementById('ameQuote').value=aboutMeD.quote||'';
+  document.getElementById('ameIg').value=aboutMeD.instagram||'';
+  document.getElementById('ameEmail').value=aboutMeD.email||'';
+  document.getElementById('amePhone').value=aboutMeD.phone||'';
+  const fe=document.getElementById('factsEditor');fe.innerHTML='';
+  const facts=aboutMeD.funFacts||['','','',''];
+  facts.forEach((f,i)=>{
+    const row=document.createElement('div');row.className='fact-row';
+    row.innerHTML=`<span style="font-size:18px">${['☕','🐕','🙏','📍'][i]||'✦'}</span>
+      <input class="ai" style="margin:0" value="${f.replace(/"/g,'&quot;')}" placeholder="Fun fact ${i+1}" id="fact_${i}"/>`;
+    fe.appendChild(row);
+  });
+}
+function saveAboutMe(){
+  aboutMeD.name       =document.getElementById('ameName').value;
+  aboutMeD.title      =document.getElementById('ameTitle').value;
+  aboutMeD.intro      =document.getElementById('ameIntro').value;
+  aboutMeD.story      =document.getElementById('ameStory').value;
+  aboutMeD.philosophy =document.getElementById('amePhilosophy').value;
+  aboutMeD.quote      =document.getElementById('ameQuote').value;
+  aboutMeD.instagram  =document.getElementById('ameIg').value;
+  aboutMeD.email      =document.getElementById('ameEmail').value;
+  aboutMeD.phone      =document.getElementById('amePhone').value;
+  aboutMeD.funFacts   =[0,1,2,3].map(i=>document.getElementById('fact_'+i)?.value||'');
+  persist('aboutMe',aboutMeD);
+  const m=document.getElementById('ameSavedMsg');m.style.display='inline';setTimeout(()=>m.style.display='none',2500);
+  toast('About Me page saved ✓');
+}
+
+// ── SERVICES ──────────────────────────────────────────────────────────────
+function renderServices(){
+  const acc=document.getElementById('servicesAccordion');acc.innerHTML='';
+  servicesD.forEach((svc,idx)=>{
+    const card=document.createElement('div');
+    card.className='svc-admin-card';card.id='svcCard_'+idx;
+
+    const header=document.createElement('div');
+    header.className='svc-card-header';
+    header.onclick=()=>toggleSvcCard(idx);
+    header.innerHTML=`
+      <span class="svc-icon">${svc.icon||'📷'}</span>
+      <span class="svc-num">${svc.num}</span>
+      <h3>${svc.title}</h3>
+      <a href="service.html?s=${svc.slug}" target="_blank" onclick="event.stopPropagation()"
+        style="font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:2px;color:var(--gold);text-decoration:none;flex-shrink:0">Preview ↗</a>
+      <button class="btn btn-d btn-sm" onclick="event.stopPropagation();deleteSvc(${idx})" style="flex-shrink:0">Delete</button>
+      <span class="chevron">›</span>`;
+
+    const body=document.createElement('div');
+    body.className='svc-card-body';body.id='svcBody_'+idx;
+    body.innerHTML=`
+      <div class="svc-body-grid">
+        <div>
+          <label class="fl">Hero Image</label>
+          <div class="svc-hero-thumb" onclick="document.getElementById('svcHeroIn_${idx}').click()">
+            <img id="svcHeroImg_${idx}" src="${svc.heroImage||''}" alt=""/>
+            <div class="svc-hero-thumb-overlay"><button class="btn btn-sm">Change Hero</button></div>
+          </div>
+          <input type="file" id="svcHeroIn_${idx}" accept="image/*" style="display:none" onchange="handleSvcHero(this,${idx})"/>
+          <button class="btn btn-sm" style="width:100%;margin-top:8px" onclick="document.getElementById('svcHeroIn_${idx}').click()">📷 Change Hero Image</button>
+          <div style="margin-top:16px">
+            <label class="fl">Session Gallery Images</label>
+            <div class="svc-images-grid" id="svcImgs_${idx}"></div>
+            <input type="file" id="svcImgIn_${idx}" accept="image/*" multiple style="display:none" onchange="handleSvcImages(this,${idx})"/>
+            <button class="btn-og btn-sm" style="width:100%" onclick="document.getElementById('svcImgIn_${idx}').click()">+ Add Images</button>
+          </div>
+        </div>
+        <div>
+          <label class="fl">Service Title</label>
+          <input class="ai" id="svcTitle_${idx}" value="${svc.title.replace(/"/g,'&quot;')}" placeholder="Title"/>
+          <label class="fl">Tagline</label>
+          <input class="ai" id="svcTagline_${idx}" value="${(svc.tagline||'').replace(/"/g,'&quot;')}" placeholder="e.g. Love as It Is"/>
+          <label class="fl">Description (use blank lines to separate paragraphs)</label>
+          <textarea class="ai" id="svcDesc_${idx}" style="min-height:160px">${svc.description||''}</textarea>
+          <button class="btn" onclick="saveSvc(${idx})">Save This Service Page</button>
+          <span id="svcSaved_${idx}" style="color:var(--gold);font-size:12px;margin-left:10px;display:none">✓ Saved!</span>
+        </div>
+      </div>`;
+
+    card.appendChild(header);
+    card.appendChild(body);
+    acc.appendChild(card);
+    renderSvcImages(idx);
+  });
+}
+
+function toggleSvcCard(idx){
+  document.getElementById('svcCard_'+idx).classList.toggle('expanded');
+}
+
+function renderSvcImages(idx){
+  const wrap=document.getElementById('svcImgs_'+idx);if(!wrap)return;
+  wrap.innerHTML='';
+  (servicesD[idx].images||[]).forEach((url,i)=>{
+    const d=document.createElement('div');d.className='svc-img-item';
+    d.innerHTML=`<img src="${url}" alt="" loading="lazy"/><button class="svc-img-del" onclick="deleteSvcImage(${idx},${i})">✕</button>`;
+    wrap.appendChild(d);
+  });
+}
+
+async function handleSvcHero(inp,idx){
+  if(!inp.files[0])return;
+  const url=await readFileAsBase64(inp.files[0]);
+  servicesD[idx].heroImage=url;
+  document.getElementById('svcHeroImg_'+idx).src=url;
+  persist('services',servicesD);
+  inp.value='';toast('Hero image updated ✓');
+}
+
+async function handleSvcImages(inp,idx){
+  const items=await filesToB64(inp.files);
+  if(!servicesD[idx].images)servicesD[idx].images=[];
+  items.forEach(i=>{servicesD[idx].images.push(i.url);});
+  persist('services',servicesD);renderSvcImages(idx);
+  inp.value='';toast('Images added ✓');
+}
+
+function deleteSvcImage(sIdx,iIdx){
+  askConfirm('Remove this image from the service page?',()=>{
+    servicesD[sIdx].images.splice(iIdx,1);
+    persist('services',servicesD);renderSvcImages(sIdx);
+  });
+}
+
+function saveSvc(idx){
+  servicesD[idx].title      =document.getElementById('svcTitle_'+idx).value;
+  servicesD[idx].tagline    =document.getElementById('svcTagline_'+idx).value;
+  servicesD[idx].description=document.getElementById('svcDesc_'+idx).value;
+  persist('services',servicesD);
+  const m=document.getElementById('svcSaved_'+idx);
+  if(m){m.style.display='inline';setTimeout(()=>m.style.display='none',2500);}
+  toast('Service saved ✓');
+}
+
+function addService(){
+  const title=document.getElementById('nsTitle').value.trim();
+  const tagline=document.getElementById('nsTagline').value.trim();
+  const icon=document.getElementById('nsIcon').value.trim()||'📷';
+  let slug=document.getElementById('nsSlug').value.trim().toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+  const desc=document.getElementById('nsDesc').value.trim();
+  if(!title){toast('Service title is required!');return;}
+  if(!slug)slug=title.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+  const num=String(servicesD.length+1).padStart(2,'0');
+  servicesD.push({id:Date.now(),slug,title,icon,num,heroImage:'',tagline,description:desc,images:[]});
+  persist('services',servicesD);
+  ['nsTitle','nsTagline','nsIcon','nsSlug','nsDesc'].forEach(id=>document.getElementById(id).value='');
+  renderServices();
+  toast('Service added ✓');
+}
+
+function deleteSvc(idx){
+  askConfirm('Delete "'+servicesD[idx].title+'"? This cannot be undone.',()=>{
+    servicesD.splice(idx,1);
+    servicesD.forEach((s,i)=>s.num=String(i+1).padStart(2,'0'));
+    persist('services',servicesD);
+    renderServices();
+    toast('Service deleted ✓');
+  });
+}
+
+// ── GALLERY ───────────────────────────────────────────────────────────────
+function renderGallery(){
+  document.getElementById('galCount').textContent=galD.length+' photos';
+  const g=document.getElementById('galGrid');g.innerHTML='';
+  galD.forEach((img,idx)=>{
+    const d=document.createElement('div');d.className='img-card';
+    d.innerHTML=`
+      <div class="thumb">
+        <img src="${img.url}" alt="" loading="lazy"/>
+        <button class="btn btn-d btn-sm" style="position:absolute;top:6px;right:6px;padding:3px 8px;font-size:11px" onclick="deleteGal(${idx})">✕</button>
+      </div>
+      <div class="card-body">
+        <input class="ai" value="${(img.title||'').replace(/"/g,'&quot;')}" placeholder="Title" oninput="galD[${idx}].title=this.value;persist('gallery',galD)" style="margin-bottom:8px"/>
+        <select class="ai" onchange="galD[${idx}].category=this.value;persist('gallery',galD)" style="margin-bottom:0">
+          ${['Portrait','Family','Maternity','Newborn','Couples','Senior','Birth','New'].map(c=>`<option${c===img.category?' selected':''}>${c}</option>`).join('')}
+        </select>
+      </div>`;
+    g.appendChild(d);
+  });
+}
+function deleteGal(idx){askConfirm('Delete this photo?',()=>{galD.splice(idx,1);persist('gallery',galD);renderGallery();});}
+
+// ── PACKAGES ──────────────────────────────────────────────────────────────
+function renderPackages(){
+  const list=document.getElementById('pkgList');list.innerHTML='';
+  pkgsD.forEach((pkg,idx)=>{
+    const row=document.createElement('div');row.className='list-row'+(pkg.featured?' gold-b':'');
+    row.innerHTML=`
+      <div class="lrow-body">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--white)">${pkg.name}</span>
+          ${pkg.featured?'<span style="background:var(--gold);color:var(--bg);font-size:10px;padding:2px 10px">MOST POPULAR</span>':''}
+        </div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold);line-height:1;margin-bottom:5px">$${pkg.price}</div>
+        <div style="font-size:12px;color:var(--textM)">⏱ ${pkg.duration} · 🖼 ${pkg.imgs}</div>
+        ${pkg.desc?`<p style="font-size:12px;color:var(--textD);margin-top:5px;line-height:1.7">${pkg.desc}</p>`:''}
+      </div>
+      <div class="lrow-actions">
+        <button class="btn btn-sm" onclick="editPkg(${idx})">Edit</button>
+        <button class="btn btn-d btn-sm" onclick="deletePkg(${idx})">Delete</button>
+      </div>`;
+    list.appendChild(row);
+  });
+}
+function addPackage(){
+  const name=document.getElementById('pName').value.trim();const price=document.getElementById('pPrice').value;
+  if(!name||!price){toast('Name and price are required!');return;}
+  pkgsD.push({id:Date.now(),name,price:+price,duration:document.getElementById('pDuration').value,imgs:document.getElementById('pImgs').value,featured:document.getElementById('pFeat').checked,desc:document.getElementById('pDesc').value});
+  persist('packages',pkgsD);
+  ['pName','pPrice','pDuration','pImgs','pDesc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('pFeat').checked=false;
+  renderPackages();toast('Package added ✓');
+}
+function deletePkg(idx){askConfirm('Delete this package?',()=>{pkgsD.splice(idx,1);persist('packages',pkgsD);renderPackages();});}
+function editPkg(idx){
+  const p=pkgsD[idx];
+  const name=prompt('Name:',p.name);if(name===null)return;
+  const price=prompt('Price:',p.price);if(price===null)return;
+  const duration=prompt('Duration:',p.duration);if(duration===null)return;
+  const imgs=prompt('Images:',p.imgs);if(imgs===null)return;
+  const desc=prompt('Description:',p.desc||'');if(desc===null)return;
+  const featured=confirm('Mark as Most Popular?');
+  pkgsD[idx]={...p,name,price:+price,duration,imgs,desc,featured};
+  persist('packages',pkgsD);renderPackages();toast('Package updated ✓');
+}
+
+// ── TESTIMONIALS ──────────────────────────────────────────────────────────
+function renderTestimonials(){
+  const list=document.getElementById('testList');list.innerHTML='';
+  testsD.forEach((t,idx)=>{
+    const row=document.createElement('div');row.className='test-admin-card';row.id='trow_'+idx;
+    const avatarHTML=t.avatar&&t.avatar.length>10
+      ?`<img src="${t.avatar}" alt=""/>`
+      :`<div class="test-avatar-initials">${(t.name||'?')[0].toUpperCase()}</div>`;
+    row.innerHTML=`
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0">
+        <div class="test-avatar-admin" onclick="uploadTestAvatar(${idx})" title="Click to upload profile photo">
+          ${avatarHTML}
+          <div class="tav-overlay">📷</div>
+        </div>
+        <input type="file" id="tav_${idx}" accept="image/*" style="display:none" onchange="handleTestAvatar(this,${idx})"/>
+        <span style="font-size:10px;color:var(--textD);font-family:'Raleway',sans-serif;letter-spacing:1px;text-align:center">Photo</span>
+      </div>
+      <div class="test-card-body">
+        <div class="test-card-view">
+          <div style="font-weight:600;color:var(--white);font-size:15px;margin-bottom:4px">${t.name}</div>
+          <div style="color:var(--gold);font-size:13px;letter-spacing:2px;margin-bottom:4px">${'★'.repeat(t.rating||5)}${'☆'.repeat(5-(t.rating||5))}</div>
+          ${t.service?`<span style="font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:2px;color:var(--gold);background:rgba(201,169,110,.1);border:1px solid rgba(201,169,110,.2);padding:2px 8px;display:inline-block;margin-bottom:8px">${t.service}</span>`:''}
+          <p style="font-size:13px;color:var(--textM);line-height:1.8;margin-bottom:10px">${t.text}</p>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-sm" onclick="editTest(${idx})">Edit</button>
+            <button class="btn btn-d btn-sm" onclick="deleteTest(${idx})">Delete</button>
+          </div>
+        </div>
+        <div class="test-card-edit">
+          <div class="grid2">
+            <input class="ai" value="${t.name}" id="teName_${idx}" placeholder="Name"/>
+            <select class="ai" id="teRating_${idx}">
+              ${[5,4,3].map(n=>`<option value="${n}"${(t.rating||5)===n?' selected':''}>${n} Stars</option>`).join('')}
+            </select>
+          </div>
+          <input class="ai" value="${t.service||''}" id="teSvc_${idx}" placeholder="Service"/>
+          <textarea class="ai" id="teText_${idx}">${t.text}</textarea>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-sm" onclick="saveTest(${idx})">Save</button>
+            <button class="btn-o btn-sm" onclick="cancelEditTest(${idx})">Cancel</button>
+          </div>
+        </div>
+      </div>`;
+    list.appendChild(row);
+  });
+}
+function addTestimonial(){
+  const name=document.getElementById('tName').value.trim();const text=document.getElementById('tText').value.trim();
+  if(!name||!text){toast('Name and testimonial text are required!');return;}
+  testsD.push({id:Date.now(),name,rating:+document.getElementById('tRating').value,service:document.getElementById('tService').value,text,avatar:''});
+  persist('testimonials',testsD);
+  document.getElementById('tName').value='';document.getElementById('tText').value='';document.getElementById('tService').value='';
+  renderTestimonials();toast('Testimonial added ✓');
+}
+function editTest(idx){document.getElementById('trow_'+idx).classList.add('editing');}
+function cancelEditTest(idx){document.getElementById('trow_'+idx).classList.remove('editing');}
+function saveTest(idx){
+  testsD[idx].name   =document.getElementById('teName_'+idx).value;
+  testsD[idx].rating =+document.getElementById('teRating_'+idx).value;
+  testsD[idx].service=document.getElementById('teSvc_'+idx).value;
+  testsD[idx].text   =document.getElementById('teText_'+idx).value;
+  persist('testimonials',testsD);renderTestimonials();toast('Review updated ✓');
+}
+function deleteTest(idx){askConfirm('Delete this testimonial?',()=>{testsD.splice(idx,1);persist('testimonials',testsD);renderTestimonials();});}
+function uploadTestAvatar(idx){document.getElementById('tav_'+idx).click();}
+async function handleTestAvatar(inp,idx){
+  if(!inp.files[0])return;
+  const url=await readFileAsBase64(inp.files[0]);
+  testsD[idx].avatar=url;
+  persist('testimonials',testsD);renderTestimonials();
+  inp.value='';toast('Profile photo updated ✓');
+}
+
+// ── STATS ─────────────────────────────────────────────────────────────────
+function renderStats(){
+  heroD=load('hero');galD=load('gallery');pkgsD=load('packages');testsD=load('testimonials');servicesD=load('services');
+  document.getElementById('statsCards').innerHTML=[
+    ['🖼',heroD.length,'Hero Slides'],
+    ['📷',galD.length,'Gallery Photos'],
+    ['📦',pkgsD.length,'Packages'],
+    ['⭐',testsD.length,'Reviews'],
+    ['🗂',servicesD.length,'Services'],
+    ['✅','Live','Status'],
+  ].map(([ico,val,lbl])=>`<div class="stat-card"><div class="ico">${ico}</div><div class="val">${val}</div><div class="lbl">${lbl}</div></div>`).join('');
+
+  const cats=galD.reduce((a,i)=>({...a,[i.category]:(a[i.category]||0)+1}),{});
+  document.getElementById('catChart').innerHTML=Object.entries(cats).map(([cat,n])=>`
+    <div class="chart-row">
+      <div style="color:var(--textM);font-size:12px;width:90px;flex-shrink:0">${cat}</div>
+      <div class="chart-bar-wrap"><div class="chart-bar" style="width:${(n/galD.length*100).toFixed(0)}%"></div></div>
+      <div style="color:var(--text);font-size:12px;width:20px;text-align:right;flex-shrink:0">${n}</div>
+    </div>`).join('');
+
+  document.getElementById('pkgListStats').innerHTML=pkgsD.map(p=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+      <div>
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--text)">${p.name}</div>
+        <div style="font-size:11px;color:var(--textD);margin-top:2px">${p.duration} · ${p.imgs}</div>
+      </div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold)">$${p.price}</div>
+    </div>`).join('');
+}
+</script>
+</body>
+</html>

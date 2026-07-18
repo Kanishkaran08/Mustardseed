@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>About Me — Mustard Seed Photography</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#0c0a08;color:#ede4d8;font-family:'Raleway',sans-serif;overflow-x:hidden;cursor:none}
+img{max-width:100%;display:block}
+a,button{cursor:none}
+:root{--bg:#0c0a08;--bg2:#131008;--bg3:#1a1510;--border:#2a201a;--border2:#3a2a20;--gold:#c9a96e;--goldD:#a07840;--goldB:#e0c07a;--text:#ede4d8;--textM:#a89078;--textD:#6b5848;--white:#f6ede2}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border2)}
+#cur{position:fixed;top:0;left:0;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .18s,height .18s}
+#cur-r{position:fixed;top:0;left:0;width:32px;height:32px;border:1.5px solid rgba(201,169,110,.45);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%)}
+.cg #cur{width:22px;height:22px;background:var(--goldB)}.cg #cur-r{width:54px;height:54px;border-color:var(--gold)}
+.rv{opacity:0;transform:translateY(44px);transition:opacity .8s cubic-bezier(.25,.46,.45,.94),transform .8s cubic-bezier(.25,.46,.45,.94)}
+.rv.lft{transform:translateX(-52px)}.rv.rgt{transform:translateX(52px)}.rv.on{opacity:1!important;transform:none!important}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ── IDENTICAL NAV ── */
+#nav{position:fixed;top:0;width:100%;z-index:1000;transition:background .35s,border-color .35s;padding:0 clamp(16px,4vw,52px);border-bottom:1px solid transparent}
+#nav.stuck{background:rgba(12,10,8,.97);backdrop-filter:blur(18px);border-bottom-color:var(--border)}
+.nav-in{max-width:1300px;margin:0 auto;height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:clamp(14px,2.2vw,18px);color:var(--white);font-weight:300;background:none;border:none;padding:0;white-space:nowrap;flex-shrink:0}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;align-items:center;gap:clamp(10px,1.6vw,20px)}
+.nav-links button,.nav-links a{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(246,237,226,.55);transition:color .2s;border:none;background:none;padding:2px 0;text-decoration:none;white-space:nowrap}
+.nav-links button:hover,.nav-links a:hover,.nav-links .active{color:var(--gold)}
+.ham{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:4px}
+.ham span{display:block;width:24px;height:1.5px;background:var(--white);transition:all .3s;border-radius:1px}
+.mob{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(12,10,8,.98);backdrop-filter:blur(20px);padding:20px 24px;border-bottom:1px solid var(--border);z-index:999;flex-direction:column}
+.mob.open{display:flex}
+.mob a,.mob button{font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--textM);padding:13px 0;border-bottom:1px solid var(--border);background:none;border-left:none;border-right:none;border-top:none;text-align:left;text-decoration:none;display:block;transition:color .2s}
+.mob a:last-child,.mob button:last-child{border-bottom:none;color:var(--gold)}
+.mob a:hover,.mob button:hover{color:var(--white)}
+
+.btn-g{display:inline-block;background:var(--gold);color:var(--bg);padding:14px 36px;font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:700;border:none;transition:all .25s;white-space:nowrap;text-decoration:none}
+.btn-g:hover{background:var(--goldB);transform:translateY(-2px);box-shadow:0 10px 30px rgba(201,169,110,.3)}
+.btn-og{display:inline-block;background:transparent;border:1px solid var(--gold);color:var(--gold);padding:13px 34px;font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:500;transition:all .25s;white-space:nowrap;text-decoration:none}
+.btn-og:hover{background:var(--gold);color:var(--bg)}
+
+/* HERO */
+.ame-hero{height:88vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ame-hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;filter:brightness(.33)}
+.ame-hero-ov{position:absolute;inset:0;background:linear-gradient(135deg,rgba(12,10,8,.78) 0%,rgba(12,10,8,.22) 55%,rgba(12,10,8,.68) 100%)}
+.ame-hero-grad{position:absolute;bottom:0;left:0;right:0;height:240px;background:linear-gradient(to top,var(--bg),transparent)}
+.ame-hero-cnt{position:relative;z-index:2;text-align:center;padding:0 clamp(16px,5vw,40px);max-width:860px}
+.ame-tag{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:20px}
+.ame-tag .tl{width:40px;height:1px;background:var(--gold);opacity:.5}
+.ame-tag span{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold)}
+.ame-hero-cnt h1{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,7vw,80px);font-weight:300;color:var(--white);line-height:1.05;margin-bottom:16px}
+.ame-hero-cnt p{font-family:'Raleway',sans-serif;font-size:clamp(12px,1.6vw,15px);line-height:2;color:rgba(246,237,226,.6);max-width:560px;margin:0 auto}
+
+/* STORY */
+.ame-story{padding:clamp(70px,9vw,120px) clamp(16px,5vw,52px);background:var(--bg)}
+.ame-sg{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(48px,7vw,100px);align-items:center}
+.ame-photo{position:relative}
+.ame-photo img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top;display:block;position:relative;z-index:1}
+.ame-f1{position:absolute;top:-16px;left:-16px;right:16px;bottom:16px;border:1px solid var(--border);z-index:0}
+.ame-f2{position:absolute;top:16px;left:16px;right:-16px;bottom:-16px;border:1px solid var(--border2);z-index:0}
+.ame-lbl{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:14px}
+.ame-h{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4.5vw,54px);font-weight:300;color:var(--white);line-height:1.08;margin-bottom:12px}
+.ame-bar{width:48px;height:2px;background:var(--gold);margin-bottom:28px}
+.ame-p{font-family:'Raleway',sans-serif;font-size:clamp(12px,1.4vw,14px);line-height:2.1;color:var(--textM);margin-bottom:18px}
+
+/* PHILOSOPHY */
+.ame-phil{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center;padding:clamp(60px,7vw,96px) clamp(16px,5vw,52px)}
+.qb-v{width:1px;height:48px;background:linear-gradient(to bottom,transparent,var(--border2));margin:0 auto 32px}
+.qb-v.bot{background:linear-gradient(to top,transparent,var(--border2));margin:32px auto 0}
+.ame-phil blockquote{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,3.2vw,32px);font-weight:300;font-style:italic;color:var(--white);line-height:1.65;max-width:700px;margin:0 auto 16px}
+.ame-phil cite{font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--textD)}
+
+/* FUN FACTS */
+.ame-facts{padding:clamp(70px,9vw,100px) clamp(16px,5vw,52px);background:var(--bg)}
+.ame-facts-sh{text-align:center;margin-bottom:clamp(36px,5vw,52px)}
+.ame-facts-sh .lbl{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:14px}
+.ame-facts-sh h2{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,4vw,48px);font-weight:300;color:var(--white)}
+.ame-facts-g{max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.ame-fc{background:var(--bg2);border:1px solid var(--border);padding:clamp(20px,3vw,32px) clamp(16px,2.5vw,24px);text-align:center;transition:border-color .3s,transform .3s}
+.ame-fc:hover{border-color:var(--gold);transform:translateY(-4px)}
+.ame-fc .fi{font-size:28px;margin-bottom:12px}
+.ame-fc p{font-family:'Raleway',sans-serif;font-size:12px;color:var(--textM);line-height:1.7}
+
+/* QUOTE */
+.ame-qb{padding:clamp(48px,6vw,80px) clamp(16px,5vw,52px);text-align:center;border-top:1px solid var(--border);background:var(--bg2)}
+.ame-qb blockquote{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,3.5vw,32px);font-style:italic;font-weight:300;color:var(--white);line-height:1.65;max-width:680px;margin:0 auto 14px}
+.ame-qb cite{font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--goldD)}
+
+/* CTA */
+.ame-cta{background:var(--bg);border-top:1px solid var(--border);padding:clamp(70px,9vw,120px) clamp(16px,5vw,52px);text-align:center}
+.ame-cta .lbl{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:16px}
+.ame-cta h2{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,5vw,52px);font-weight:300;color:var(--white);line-height:1.1;margin-bottom:20px}
+.ame-cta p{font-family:'Raleway',sans-serif;font-size:13px;color:var(--textM);line-height:2;max-width:480px;margin:0 auto 36px}
+.ame-cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border)}
+.f-main{padding:clamp(40px,5vw,60px) clamp(16px,5vw,48px)}
+.f-in{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:clamp(20px,4vw,48px)}
+.f-logo{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--white);font-weight:300;margin-bottom:8px}
+.f-logo span{color:var(--gold)}
+.f-in .fdesc{font-family:'Raleway',sans-serif;font-size:12px;color:var(--textD);line-height:1.9;max-width:260px}
+.f-col h4{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.f-col a,.f-col button{font-family:'Raleway',sans-serif;font-size:12px;color:var(--textD);display:block;text-decoration:none;margin-bottom:9px;transition:color .2s;border:none;background:none;padding:0;text-align:left;line-height:1.8}
+.f-col a:hover,.f-col button:hover{color:var(--gold)}
+.f-col p{font-family:'Raleway',sans-serif;font-size:12px;color:var(--textD);margin-bottom:9px;line-height:1.8}
+.f-div{border:none;border-top:1px solid var(--border);margin:0}
+.f-bot{max-width:1300px;margin:0 auto;padding:clamp(14px,2vw,22px) clamp(16px,5vw,48px);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.f-bot p{font-family:'Raleway',sans-serif;font-size:11px;color:var(--textD);letter-spacing:1px}
+.f-bot .fv{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:var(--textD)}
+
+@media(max-width:900px){
+  .nav-links{display:none}.ham{display:flex}
+  .ame-sg{grid-template-columns:1fr;gap:36px}
+  .ame-f1,.ame-f2{display:none}
+  .ame-facts-g{grid-template-columns:repeat(2,1fr)}
+  .f-in{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .ame-facts-g{grid-template-columns:1fr 1fr}
+  .f-in{grid-template-columns:1fr}
+  .ame-cta-btns{flex-direction:column;align-items:center}
+  .f-bot{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-r"></div>
+
+<!-- ══ IDENTICAL NAV ══ -->
+<nav id="nav">
+  <div class="nav-in">
+    <button class="nav-logo" onclick="window.location.href='index.html'">Mustard Seed <span>Photography</span></button>
+    <div class="nav-links">
+      <button onclick="window.location.href='index.html'">Home</button>
+      <button onclick="window.location.href='index.html#about'">About</button>
+      <button onclick="window.location.href='index.html#services'">Services</button>
+      <button onclick="window.location.href='index.html#packages'">Packages</button>
+      <button onclick="window.location.href='index.html#gallery'">Gallery</button>
+      <button onclick="window.location.href='index.html#testimonials'">Reviews</button>
+      <button onclick="window.location.href='index.html#contact'">Contact</button>
+      <a href="about-me.html" class="active">About Me</a>
+    </div>
+    <button class="ham" onclick="document.getElementById('mob').classList.toggle('open')"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob" id="mob">
+  <button onclick="window.location.href='index.html'">Home</button>
+  <button onclick="window.location.href='index.html#about'">About</button>
+  <button onclick="window.location.href='index.html#services'">Services</button>
+  <button onclick="window.location.href='index.html#packages'">Packages</button>
+  <button onclick="window.location.href='index.html#gallery'">Gallery</button>
+  <button onclick="window.location.href='index.html#testimonials'">Reviews</button>
+  <button onclick="window.location.href='index.html#contact'">Contact</button>
+  <a href="about-me.html">About Me</a>
+</div>
+
+<!-- HERO -->
+<div class="ame-hero">
+  <img id="ameHeroImg" class="ame-hero-bg" src="" alt=""/>
+  <div class="ame-hero-ov"></div>
+  <div class="ame-hero-grad"></div>
+  <div class="ame-hero-cnt">
+    <div class="ame-tag"><div class="tl"></div><span>The Photographer</span><div class="tl"></div></div>
+    <h1 id="ameName">Taylor</h1>
+    <p id="ameIntro"></p>
+  </div>
+</div>
+
+<!-- STORY -->
+<section class="ame-story">
+  <div class="ame-sg">
+    <div class="ame-photo rv lft">
+      <img id="ameStoryImg" src="" alt=""/>
+      <div class="ame-f1"></div><div class="ame-f2"></div>
+    </div>
+    <div class="rv rgt">
+      <span class="ame-lbl">My Story</span>
+      <h2 class="ame-h" id="ameTitle">The Face Behind the Lens</h2>
+      <div class="ame-bar"></div>
+      <p class="ame-p" id="ameStory"></p>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<div class="ame-phil rv">
+  <div class="qb-v"></div>
+  <span style="font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:24px">My Philosophy</span>
+  <blockquote id="amePhil"></blockquote>
+  <div class="qb-v bot"></div>
+</div>
+
+<!-- FUN FACTS -->
+<section class="ame-facts">
+  <div class="ame-facts-sh rv">
+    <span class="lbl">A Little About Me</span>
+    <h2>Fun Facts</h2>
+  </div>
+  <div class="ame-facts-g" id="ameFactsGrid"></div>
+</section>
+
+<!-- QUOTE -->
+<div class="ame-qb rv">
+  <div class="qb-v"></div>
+  <blockquote id="ameQuote"></blockquote>
+  <div class="qb-v bot"></div>
+</div>
+
+<!-- CTA -->
+<div class="ame-cta rv">
+  <span class="lbl">Let's Work Together</span>
+  <h2>Let's Create Together</h2>
+  <p>Ready to capture your most precious moments? I'd love to hear from you and bring your vision to life.</p>
+  <div class="ame-cta-btns">
+    <a href="index.html#contact" class="btn-g">Book a Session</a>
+    <a href="index.html#gallery" class="btn-og">View Gallery</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-main">
+    <div class="f-in">
+      <div>
+        <div class="f-logo">Mustard Seed <span>Photography</span></div>
+        <p class="fdesc">Faith-based photography capturing life's most meaningful moments in Pennsylvania.</p>
+      </div>
+      <div class="f-col">
+        <h4>Navigate</h4>
+        <a href="index.html">Home</a>
+        <a href="index.html#gallery">Gallery</a>
+        <a href="index.html#packages">Pricing</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="about-me.html">About Me</a>
+      </div>
+      <div class="f-col">
+        <h4>Contact</h4>
+        <p>Pennsylvania, PA</p>
+        <p>+1 (717) 992-7226</p>
+        <p style="color:var(--gold)">@mustardseedphotographypa</p>
+      </div>
+    </div>
+  </div>
+  <hr class="f-div"/>
+  <div class="f-bot">
+    <p>&copy; 2025 Mustard Seed Photography &middot; All rights reserved</p>
+    <span class="fv">"Faith as small as a mustard seed…" — Matthew 17:20</span>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script>
+const curEl=document.getElementById('cur'),ringEl=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;curEl.style.left=mx+'px';curEl.style.top=my+'px';});
+(function ar(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ringEl.style.left=rx+'px';ringEl.style.top=ry+'px';requestAnimationFrame(ar);})();
+document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('cg'));el.addEventListener('mouseleave',()=>document.body.classList.remove('cg'));});
+if('ontouchstart'in window){curEl.style.display='none';ringEl.style.display='none';document.body.style.cursor='auto';}
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:.07,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('stuck',window.scrollY>50),{passive:true});
+
+const d={...DEFAULTS.aboutMe,...load('aboutMe')};
+document.getElementById('ameHeroImg').src=d.heroImage;
+document.getElementById('ameStoryImg').src=d.heroImage;
+document.getElementById('ameName').textContent=d.name||'Taylor';
+document.getElementById('ameIntro').textContent=d.intro;
+document.getElementById('ameTitle').textContent=d.title;
+document.getElementById('ameStory').textContent=d.story;
+document.getElementById('amePhil').textContent='"'+d.philosophy+'"';
+document.getElementById('ameQuote').textContent=d.quote;
+const fi=['☕','🐕','🙏','📍'];
+const fg=document.getElementById('ameFactsGrid');
+(d.funFacts||[]).slice(0,4).forEach((f,i)=>{
+  const card=document.createElement('div');card.className='ame-fc rv d'+(i+1);
+  card.innerHTML='<div class="fi">'+fi[i]+'</div><p>'+f+'</p>';
+  fg.appendChild(card);obs.observe(card);
+});
+</script>
+</body>
+</html>

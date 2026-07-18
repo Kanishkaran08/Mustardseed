@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Mustard Seed Photography</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  emailjs.init('PulxofjqUdI5VrrCj');
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#0c0a08;color:#ede4d8;font-family:'Raleway',sans-serif;overflow-x:hidden;cursor:none}
+img{max-width:100%;display:block}
+a,button{cursor:none}
+:root{--bg:#0c0a08;--bg2:#131008;--bg3:#1a1510;--border:#2a201a;--border2:#3a2a20;--gold:#c9a96e;--goldD:#a07840;--goldB:#e0c07a;--text:#ede4d8;--textM:#a89078;--textD:#6b5848;--white:#f6ede2}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border2)}
+#cur{position:fixed;top:0;left:0;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .18s,height .18s}
+#cur-r{position:fixed;top:0;left:0;width:32px;height:32px;border:1.5px solid rgba(201,169,110,.45);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%)}
+.cg #cur{width:22px;height:22px;background:var(--goldB)}.cg #cur-r{width:54px;height:54px;border-color:var(--gold)}
+.rv{opacity:0;transform:translateY(44px);transition:opacity .8s cubic-bezier(.25,.46,.45,.94),transform .8s cubic-bezier(.25,.46,.45,.94)}
+.rv.lft{transform:translateX(-52px)}.rv.rgt{transform:translateX(52px)}.rv.on{opacity:1!important;transform:none!important}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+/* ── IDENTICAL NAV ── */
+#nav{position:fixed;top:0;width:100%;z-index:1000;transition:background .35s,border-color .35s;padding:0 clamp(16px,4vw,52px);border-bottom:1px solid transparent}
+#nav.stuck{background:rgba(12,10,8,.97);backdrop-filter:blur(18px);border-bottom-color:var(--border)}
+.nav-in{max-width:1300px;margin:0 auto;height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:clamp(14px,2.2vw,18px);color:var(--white);font-weight:300;background:none;border:none;padding:0;white-space:nowrap;flex-shrink:0}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;align-items:center;gap:clamp(10px,1.6vw,20px)}
+.nav-links button,.nav-links a{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(246,237,226,.55);transition:color .2s;border:none;background:none;padding:2px 0;text-decoration:none;white-space:nowrap}
+.nav-links button:hover,.nav-links a:hover{color:var(--gold)}
+.ham{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:4px}
+.ham span{display:block;width:24px;height:1.5px;background:var(--white);transition:all .3s;border-radius:1px}
+.mob{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(12,10,8,.98);backdrop-filter:blur(20px);padding:20px 24px;border-bottom:1px solid var(--border);z-index:999;flex-direction:column}
+.mob.open{display:flex}
+.mob a,.mob button{font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--textM);padding:13px 0;border-bottom:1px solid var(--border);background:none;border-left:none;border-right:none;border-top:none;text-align:left;text-decoration:none;display:block;transition:color .2s}
+.mob a:last-child,.mob button:last-child{border-bottom:none;color:var(--gold)}
+.mob a:hover,.mob button:hover{color:var(--white)}
+
+.btn-g{display:inline-block;background:var(--gold);color:var(--bg);padding:14px 36px;font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:700;border:none;transition:all .25s;white-space:nowrap}
+.btn-g:hover{background:var(--goldB);transform:translateY(-2px);box-shadow:0 10px 30px rgba(201,169,110,.3)}
+
+/* HERO */
+.sv-hero{height:88vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.sv-hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.32)}
+.sv-hero-ov{position:absolute;inset:0;background:linear-gradient(135deg,rgba(12,10,8,.78) 0%,rgba(12,10,8,.22) 55%,rgba(12,10,8,.68) 100%)}
+.sv-hero-grad{position:absolute;bottom:0;left:0;right:0;height:240px;background:linear-gradient(to top,var(--bg),transparent)}
+.sv-hero-cnt{position:relative;z-index:2;text-align:center;padding:0 clamp(16px,5vw,40px);max-width:860px}
+.sv-tag{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:20px}
+.sv-tag .tl{width:40px;height:1px;background:var(--gold);opacity:.5}
+.sv-tag span{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold)}
+.sv-hero-cnt h1{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,7vw,84px);font-weight:300;color:var(--white);line-height:1.05;margin-bottom:28px}
+.sv-cta{background:var(--gold);color:var(--bg);border:none;padding:16px 44px;font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:700;transition:all .25s;display:inline-block}
+.sv-cta:hover{background:var(--goldB);transform:translateY(-2px);box-shadow:0 12px 32px rgba(201,169,110,.4)}
+
+/* CONTENT */
+.sv-body{padding:clamp(60px,7vw,100px) clamp(16px,5vw,48px);background:var(--bg)}
+.sv-body-g{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,96px);align-items:start}
+.sv-lbl{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:14px}
+.sv-body h2{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,4vw,46px);font-weight:300;color:var(--white);line-height:1.15;margin-bottom:12px}
+.sv-bar{width:48px;height:2px;background:var(--gold);margin-bottom:28px}
+.sv-p{font-family:'Raleway',sans-serif;font-size:clamp(12px,1.5vw,14px);line-height:2.1;color:var(--textM);margin-bottom:18px}
+.mosaic{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:10px}
+.mo-big{grid-row:span 2;height:clamp(300px,42vw,500px);overflow:hidden}
+.mo-sm{height:clamp(140px,18vw,240px);overflow:hidden}
+.mosaic img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.25,.46,.45,.94)}
+.mosaic div:hover img{transform:scale(1.06)}
+
+/* GALLERY */
+.sv-gal{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:clamp(60px,7vw,100px) clamp(16px,5vw,48px)}
+.sv-gsh{text-align:center;margin-bottom:44px}
+.sv-gsh .lbl{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:14px}
+.sv-gsh h2{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,4vw,48px);font-weight:300;color:var(--white)}
+.sv-gsh .dv{display:flex;align-items:center;gap:10px;max-width:160px;margin:14px auto 0}
+.sv-gsh .dv::before,.sv-gsh .dv::after{content:'';flex:1;height:1px;background:var(--border2)}
+.sv-gg{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px;max-width:1200px;margin:0 auto}
+.sg-i{overflow:hidden;cursor:none;position:relative;aspect-ratio:4/3;background:var(--bg3)}
+.sg-i img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.25,.46,.45,.94)}
+.sg-i:hover img{transform:scale(1.07)}
+.sg-ov{position:absolute;inset:0;background:rgba(12,10,8,0);display:flex;align-items:center;justify-content:center;transition:background .35s}
+.sg-i:hover .sg-ov{background:rgba(12,10,8,.48)}
+.sg-ov span{color:var(--white);font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;opacity:0;transition:all .35s;transform:translateY(6px)}
+.sg-i:hover .sg-ov span{opacity:1;transform:translateY(0)}
+#lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:9999;align-items:center;justify-content:center}
+#lb.open{display:flex}
+#lb img{max-height:86vh;max-width:86vw;object-fit:contain}
+.lb-a{position:absolute;top:50%;transform:translateY(-50%);background:none;border:1px solid var(--gold);border-radius:50%;width:46px;height:46px;font-size:22px;color:var(--gold);display:flex;align-items:center;justify-content:center;transition:all .2s}
+.lb-a:hover{background:var(--gold);color:var(--bg)}
+.lb-p{left:16px}.lb-n{right:16px}
+#lb-x{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--textM);font-size:28px}
+
+/* CONTACT */
+.sv-ct{padding:clamp(60px,7vw,100px) clamp(16px,5vw,48px);background:var(--bg)}
+.sv-ct-g{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1.4fr;gap:clamp(40px,6vw,80px);align-items:start}
+.sv-ct-lbl{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:14px}
+.sv-ct h2{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,4vw,48px);font-weight:300;color:var(--white);line-height:1.1;margin-bottom:12px}
+.ci-row{display:flex;gap:14px;margin-bottom:18px;align-items:flex-start}
+.ci-row .ico{font-size:17px;flex-shrink:0;margin-top:2px}
+.ci-row .il{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+.ci-row .iv{font-family:'Raleway',sans-serif;font-size:13px;color:var(--text)}
+.cf-wrap{background:var(--bg2);padding:clamp(24px,4vw,40px);border:1px solid var(--border)}
+.cf-wrap h3{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--white);font-weight:300;margin-bottom:22px}
+.inp{width:100%;padding:13px 16px;border:1px solid var(--border2);background:var(--bg);font-family:'Raleway',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color .2s;margin-bottom:12px}
+.inp::placeholder{color:var(--textD)}.inp:focus{border-color:var(--gold)}
+textarea.inp{resize:vertical;min-height:110px}
+.cf-ok{display:none;text-align:center;padding:48px 0}.cf-ok.show{display:block}
+
+/* OTHER SERVICES */
+.sv-other{background:var(--bg2);border-top:1px solid var(--border);padding:clamp(60px,7vw,100px) clamp(16px,5vw,48px)}
+.sv-osh{text-align:center;margin-bottom:44px}
+.sv-osh .lbl{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:14px}
+.sv-osh h2{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,4vw,48px);font-weight:300;color:var(--white)}
+.sv-osh .dv{display:flex;align-items:center;gap:10px;max-width:160px;margin:14px auto 0}
+.sv-osh .dv::before,.sv-osh .dv::after{content:'';flex:1;height:1px;background:var(--border2)}
+.os-list{max-width:1100px;margin:0 auto}
+.os-row{display:flex;align-items:center;border-top:1px solid var(--border);padding:clamp(16px,2.5vw,26px) clamp(12px,2vw,24px);text-decoration:none;color:inherit;position:relative;overflow:hidden;transition:background .3s,padding-left .35s}
+.os-row:last-child{border-bottom:1px solid var(--border)}
+.os-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:var(--gold);transition:width .4s;z-index:0}
+.os-row:hover::before{width:3px}
+.os-row:hover{background:rgba(201,169,110,.04);padding-left:clamp(18px,3vw,36px)}
+.os-row>*{position:relative;z-index:1}
+.os-num{font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:3px;color:var(--goldD);min-width:44px;flex-shrink:0;transition:color .3s}
+.os-row:hover .os-num{color:var(--gold)}
+.os-ico{font-size:clamp(20px,2.5vw,26px);margin:0 clamp(12px,2vw,24px);flex-shrink:0;transition:transform .3s}
+.os-row:hover .os-ico{transform:scale(1.15)}
+.os-body{flex:1;min-width:0}
+.os-body h3{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.5vw,28px);font-weight:300;color:var(--white);line-height:1;margin-bottom:3px;transition:color .3s}
+.os-row:hover .os-body h3{color:var(--goldB)}
+.os-body p{font-family:'Raleway',sans-serif;font-size:clamp(10px,1.3vw,12px);color:var(--textD);transition:color .3s}
+.os-row:hover .os-body p{color:var(--textM)}
+.os-arr{width:38px;height:38px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;color:var(--textD);font-size:16px;transition:all .3s;flex-shrink:0;margin-left:auto}
+.os-row:hover .os-arr{border-color:var(--gold);color:var(--gold);transform:translateX(4px)}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border)}
+.f-main{padding:clamp(40px,5vw,60px) clamp(16px,5vw,48px)}
+.f-in{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:clamp(20px,4vw,48px)}
+.f-logo{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--white);font-weight:300;margin-bottom:8px}
+.f-logo span{color:var(--gold)}
+.f-in .fdesc{font-family:'Raleway',sans-serif;font-size:12px;color:var(--textD);line-height:1.9;max-width:260px}
+.f-col h4{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.f-col a,.f-col button{font-family:'Raleway',sans-serif;font-size:12px;color:var(--textD);display:block;text-decoration:none;margin-bottom:9px;transition:color .2s;border:none;background:none;padding:0;text-align:left;line-height:1.8}
+.f-col a:hover,.f-col button:hover{color:var(--gold)}
+.f-col p{font-family:'Raleway',sans-serif;font-size:12px;color:var(--textD);margin-bottom:9px;line-height:1.8}
+.f-div{border:none;border-top:1px solid var(--border);margin:0}
+.f-bot{max-width:1300px;margin:0 auto;padding:clamp(14px,2vw,22px) clamp(16px,5vw,48px);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.f-bot p{font-family:'Raleway',sans-serif;font-size:11px;color:var(--textD);letter-spacing:1px}
+.f-bot .fv{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:var(--textD)}
+
+@media(max-width:900px){
+  .nav-links{display:none}.ham{display:flex}
+  .sv-body-g{grid-template-columns:1fr;gap:32px}
+  .sv-ct-g{grid-template-columns:1fr;gap:28px}
+  .f-in{grid-template-columns:1fr 1fr;gap:24px}
+  .mosaic{grid-template-columns:1fr 1fr}
+  .mo-big{grid-row:span 1;height:220px}.mo-sm{height:220px}
+}
+@media(max-width:600px){
+  .sv-gg{grid-template-columns:1fr 1fr}
+  .f-in{grid-template-columns:1fr}
+  .f-bot{flex-direction:column;align-items:flex-start}
+  .mosaic{grid-template-columns:1fr}
+  .mo-big,.mo-sm{height:220px}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-r"></div>
+
+<!-- ══ IDENTICAL NAV ══ -->
+<nav id="nav">
+  <div class="nav-in">
+    <button class="nav-logo" onclick="window.location.href='index.html'">Mustard Seed <span>Photography</span></button>
+    <div class="nav-links">
+      <button onclick="window.location.href='index.html'">Home</button>
+      <button onclick="window.location.href='index.html#about'">About</button>
+      <button onclick="window.location.href='index.html#services'">Services</button>
+      <button onclick="window.location.href='index.html#packages'">Packages</button>
+      <button onclick="window.location.href='index.html#gallery'">Gallery</button>
+      <button onclick="window.location.href='index.html#testimonials'">Reviews</button>
+      <button onclick="document.getElementById('svContact').scrollIntoView({behavior:'smooth'})">Contact</button>
+      <a href="about-me.html">About Me</a>
+    </div>
+    <button class="ham" onclick="document.getElementById('mob').classList.toggle('open')"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob" id="mob">
+  <button onclick="window.location.href='index.html'">Home</button>
+  <button onclick="window.location.href='index.html#about'">About</button>
+  <button onclick="window.location.href='index.html#services'">Services</button>
+  <button onclick="window.location.href='index.html#packages'">Packages</button>
+  <button onclick="window.location.href='index.html#gallery'">Gallery</button>
+  <button onclick="window.location.href='index.html#testimonials'">Reviews</button>
+  <button onclick="document.getElementById('svContact').scrollIntoView({behavior:'smooth'});document.getElementById('mob').classList.remove('open')">Contact</button>
+  <a href="about-me.html">About Me</a>
+</div>
+
+<!-- HERO -->
+<div class="sv-hero">
+  <img id="svHeroImg" class="sv-hero-bg" src="" alt=""/>
+  <div class="sv-hero-ov"></div>
+  <div class="sv-hero-grad"></div>
+  <div class="sv-hero-cnt">
+    <div class="sv-tag"><div class="tl"></div><span id="svTagline"></span><div class="tl"></div></div>
+    <h1 id="svTitle">Loading…</h1>
+    <button class="sv-cta" onclick="document.getElementById('svContact').scrollIntoView({behavior:'smooth'})">Get in Touch</button>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<section class="sv-body">
+  <div class="sv-body-g">
+    <div class="rv lft">
+      <span class="sv-lbl">About This Session</span>
+      <h2 id="svContentTitle"></h2>
+      <div class="sv-bar"></div>
+      <div id="svDesc"></div>
+      <button class="btn-g" style="margin-top:8px" onclick="document.getElementById('svContact').scrollIntoView({behavior:'smooth'})">Book This Session</button>
+    </div>
+    <div class="mosaic rv rgt" id="svMosaic"></div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<div class="sv-gal">
+  <div class="sv-gsh rv">
+    <span class="lbl">Portfolio</span>
+    <h2>Session Gallery</h2>
+    <div class="dv"><span style="color:var(--gold)">&#10022;</span></div>
+  </div>
+  <div class="sv-gg" id="svGalGrid"></div>
+</div>
+<div id="lb">
+  <button class="lb-a lb-p" onclick="lbPrev()">&#8249;</button>
+  <img id="lbImg" src="" alt=""/>
+  <button class="lb-a lb-n" onclick="lbNext()">&#8250;</button>
+  <button id="lb-x" onclick="closeLb()">&#x2715;</button>
+</div>
+
+<!-- CONTACT -->
+<section class="sv-ct" id="svContact">
+  <div class="sv-ct-g">
+    <div class="rv lft">
+      <span class="sv-ct-lbl">Book a Session</span>
+      <h2>Get in Touch</h2>
+      <div class="sv-bar"></div>
+      <div class="ci-row"><div class="ico">&#128205;</div><div><div class="il">Location</div><div class="iv">Pennsylvania, PA</div></div></div>
+      <div class="ci-row"><div class="ico">&#128222;</div><div><div class="il">Phone</div><div class="iv">+1 (717) 992-7226</div></div></div>
+      <div class="ci-row"><div class="ico">&#9993;</div><div><div class="il">Email</div><div class="iv">Mustard.seed.photography.pa@gmail.com</div></div></div>
+      <div class="ci-row"><div class="ico">&#128248;</div><div><div class="il">Instagram</div><div class="iv">@mustardseedphotographypa</div></div></div>
+    </div>
+    <div class="cf-wrap rv rgt">
+      <div id="svCfForm">
+        <h3>Let's Create Something Beautiful</h3>
+        <input class="inp" id="svFName" placeholder="Your Name *"/>
+        <input class="inp" id="svFEmail" placeholder="Email Address *"/>
+        <input class="inp" id="svFPhone" placeholder="Phone Number"/>
+        <textarea class="inp" id="svFMsg" placeholder="Hey, I'm reaching out about…"></textarea>
+        <button class="btn-g" style="width:100%" onclick="svSubmit()">Send Message</button>
+      </div>
+      <div class="cf-ok" id="svCfOk">
+        <div style="font-size:48px;margin-bottom:14px">&#9993;</div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--white);font-weight:300;margin-bottom:10px">Thank You!</h3>
+        <p style="font-family:'Raleway',sans-serif;color:var(--textM);font-size:13px;line-height:2">I'll be in touch soon!</p>
+        <button class="btn-g" style="margin-top:22px" onclick="svResetForm()">Send Another</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OTHER SERVICES -->
+<div class="sv-other">
+  <div class="sv-osh rv">
+    <span class="lbl">Explore More</span>
+    <h2>Other Services</h2>
+    <div class="dv"><span style="color:var(--gold)">&#10022;</span></div>
+  </div>
+  <div class="os-list" id="otherList"></div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-main">
+    <div class="f-in">
+      <div>
+        <div class="f-logo">Mustard Seed <span>Photography</span></div>
+        <p class="fdesc">Faith-based photography capturing life's most meaningful moments in Pennsylvania.</p>
+      </div>
+      <div class="f-col">
+        <h4>Navigate</h4>
+        <a href="index.html">Home</a>
+        <a href="index.html#gallery">Gallery</a>
+        <a href="index.html#packages">Pricing</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="about-me.html">About Me</a>
+      </div>
+      <div class="f-col">
+        <h4>Contact</h4>
+        <p>Pennsylvania, PA</p>
+        <p>+1 (717) 992-7226</p>
+        <p style="color:var(--gold)">@mustardseedphotographypa</p>
+      </div>
+    </div>
+  </div>
+  <hr class="f-div"/>
+  <div class="f-bot">
+    <p>&copy; 2025 Mustard Seed Photography &middot; All rights reserved</p>
+    <span class="fv">"Faith as small as a mustard seed…" — Matthew 17:20</span>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script>
+const curEl=document.getElementById('cur'),ringEl=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;curEl.style.left=mx+'px';curEl.style.top=my+'px';});
+(function ar(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ringEl.style.left=rx+'px';ringEl.style.top=ry+'px';requestAnimationFrame(ar);})();
+document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('cg'));el.addEventListener('mouseleave',()=>document.body.classList.remove('cg'));});
+if('ontouchstart'in window){curEl.style.display='none';ringEl.style.display='none';document.body.style.cursor='auto';}
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:.07,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('stuck',window.scrollY>50),{passive:true});
+
+/* load service data */
+const slug=new URLSearchParams(location.search).get('s')||'couples';
+const services=load('services');
+const svc=services.find(s=>s.slug===slug)||services[0];
+document.title=svc.title+' — Mustard Seed Photography';
+document.getElementById('svHeroImg').src=svc.heroImage;
+document.getElementById('svTagline').textContent=svc.tagline;
+document.getElementById('svTitle').textContent=svc.title;
+document.getElementById('svContentTitle').textContent=svc.tagline;
+const descEl=document.getElementById('svDesc');
+(svc.description||'').split('\n\n').forEach(para=>{if(!para.trim())return;const p=document.createElement('p');p.className='sv-p';p.textContent=para.trim();descEl.appendChild(p);});
+
+/* mosaic */
+const mos=document.getElementById('svMosaic');
+(svc.images||[]).slice(0,4).forEach((url,i)=>{
+  const d=document.createElement('div');d.className=i===0?'mo-big':'mo-sm';
+  d.innerHTML='<img src="'+url+'" alt="" loading="'+(i===0?'eager':'lazy')+'"/>';
+  mos.appendChild(d);
+});
+
+/* gallery */
+const galData=load('gallery');
+const allImgs=[...(svc.images||[]),...galData.filter(g=>g.category===svc.title.split(' ')[0]).map(g=>g.url)];
+const uniqImgs=[...new Set(allImgs)].slice(0,9);
+const gg=document.getElementById('svGalGrid');
+let lbI=0;
+uniqImgs.forEach((url,i)=>{
+  const d=document.createElement('div');d.className='sg-i';
+  d.innerHTML='<img src="'+url+'" alt="" loading="lazy"/><div class="sg-ov"><span>View</span></div>';
+  d.onclick=()=>openLb(i);gg.appendChild(d);
+});
+function openLb(i){lbI=i;document.getElementById('lbImg').src=uniqImgs[i];document.getElementById('lb').classList.add('open');}
+function closeLb(){document.getElementById('lb').classList.remove('open');}
+function lbNext(){openLb((lbI+1)%uniqImgs.length);}
+function lbPrev(){openLb((lbI-1+uniqImgs.length)%uniqImgs.length);}
+document.getElementById('lb').addEventListener('click',e=>{if(e.target===e.currentTarget)closeLb();});
+document.addEventListener('keydown',e=>{if(!document.getElementById('lb').classList.contains('open'))return;if(e.key==='Escape')closeLb();if(e.key==='ArrowRight')lbNext();if(e.key==='ArrowLeft')lbPrev();});
+
+/* contact pre-fill */
+document.getElementById('svFMsg').placeholder='Hey, I\'m reaching out about '+svc.title;
+function svSubmit(){
+  const n=document.getElementById('svFName').value.trim();
+  const e=document.getElementById('svFEmail').value.trim();
+  const p=document.getElementById('svFPhone').value.trim();
+  const m=document.getElementById('svFMsg').value.trim();
+  if(!n||!e){alert('Please fill in your name and email.');return;}
+
+  const btn=document.querySelector('#svCfForm .btn-g');
+  btn.textContent='Sending…';
+  btn.disabled=true;
+
+  emailjs.send('service_ysr7oxa','template_1qx88dk',{
+    from_name : n,
+    reply_to  : e,
+    phone     : p || 'Not provided',
+    service   : svc.title || 'Not specified',
+    package   : 'Not specified',
+    message   : m || 'No message provided',
+    to_email  : 'hadesgate88@gmail.com'
+  }).then(function(){
+    document.getElementById('svCfForm').style.display='none';
+    document.getElementById('svCfOk').classList.add('show');
+  }, function(error){
+    console.log('FAILED', error);
+    alert('Failed to send: ' + error.text);
+    btn.textContent='Send Message';
+    btn.disabled=false;
+  });
+}
+function svResetForm(){
+  ['svFName','svFEmail','svFPhone','svFMsg'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('svCfOk').classList.remove('show');
+  document.getElementById('svCfForm').style.display='block';
+  const btn=document.querySelector('#svCfForm .btn-g');
+  if(btn){btn.textContent='Send Message';btn.disabled=false;}
+}
+
+/* other services */
+const ol=document.getElementById('otherList');
+services.filter(s=>s.slug!==slug).forEach(s=>{
+  const a=document.createElement('a');a.className='os-row';a.href='service.html?s='+s.slug;
+  a.innerHTML='<div class="os-num">'+s.num+'</div><span class="os-ico">'+s.icon+'</span><div class="os-body"><h3>'+s.title+'</h3><p>'+s.tagline+'</p></div><div class="os-arr">&#8594;</div>';
+  ol.appendChild(a);
+  obs.observe(a);
+});
+</script>
+</body>
+</html>
